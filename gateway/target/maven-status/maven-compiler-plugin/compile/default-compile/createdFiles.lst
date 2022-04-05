@@ -1,0 +1,4 @@
+name/sakanacatcher/recruit/gateway/service/ServiceRegister.class
+name/sakanacatcher/recruit/gateway/GateWayApplication.class
+name/sakanacatcher/recruit/gateway/service/AuthorizationService.class
+name/sakanacatcher/recruit/gateway/filter/SystemGlobalFilter.class

@@ -1,0 +1,33 @@
+server:
+  port: 83
+
+spring:
+  jpa:
+    properties:
+      hibernate:
+        enable_lazy_load_no_trans=true:
+  application:
+    name: collector-consumer
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+    sentinel:
+      transport:
+        dashboard: localhost:8080
+        port: 8719
+  datasource:
+    name: druidDataSource
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/sakana-online-recruit-sys?characterEncoding=UTF-8&useUnicode=true&useSSL=false&serverTimezone=GMT
+    username: root
+    password: root
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+service-url:
+  nacos-user-service: http://collector-provider

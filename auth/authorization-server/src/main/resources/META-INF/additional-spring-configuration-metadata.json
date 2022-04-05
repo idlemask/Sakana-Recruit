@@ -1,0 +1,18 @@
+{
+  "properties": [
+    {
+      "name": "encode.secret",
+      "type": "java.lang.String",
+      "description": "Description for encode.secret."
+    },
+    {
+      "name": "encode.increment",
+      "type": "java.lang.String",
+      "description": "Description for encode.increment."
+    },
+    {
+      "name": "encode.maximum",
+      "type": "java.lang.String",
+      "description": "Description for encode.maximum."
+    }
+  ] }
