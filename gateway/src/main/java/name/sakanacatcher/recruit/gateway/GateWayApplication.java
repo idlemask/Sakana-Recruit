@@ -1,6 +1,5 @@
 package name.sakanacatcher.recruit.gateway;
 
-import name.sakanacatcher.recruit.gateway.service.AuthorizationService;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,11 +18,12 @@ import java.util.stream.Collectors;
 @SpringBootApplication
 @EnableFeignClients
 public class GateWayApplication {
+
     public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(GateWayApplication.class, args);
-        AuthorizationService authorizationService = (AuthorizationService) context.getBean(AuthorizationService.class);
+        Register register = (Register) context.getBean(Register.class);
         try {
-            authorizationService.generateServiceToken("gateway");
+           register.registerPersistent();
         } catch (Exception e) {
             System.out.println("注册失败:" + e);
             SpringApplication.exit(context);
