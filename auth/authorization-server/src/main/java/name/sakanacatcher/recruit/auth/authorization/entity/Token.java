@@ -18,13 +18,13 @@ import java.util.Map;
 @Table(name = "user_auth_token")
 public class Token {
     @Transient
-    private static String SECRET = "Sakana";
-
-    @Transient
     private static long EXPIRATION_INCREMENT = 3600L;
 
     @Transient
     private static long EXPIRATION_MAXIMUM = 604800L;
+
+    @Transient
+    private String sign;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,14 +49,16 @@ public class Token {
     @Column(name = "expired_Time", nullable = false)
     private Long expiredTime;
 
-    public Token(String username) {
+    public Token(String sign, String username) {
         this.username = username;
+        this.sign = sign;
         createTime = System.currentTimeMillis();
         expiredTime = Long.valueOf(Long.toString(System.currentTimeMillis() + EXPIRATION_INCREMENT * 8 * 1000));
         setToken();
     }
 
-    public Token(String username, String device) {
+    public Token(String sign, String username, String device) {
+        this.sign = sign;
         this.username = username;
         this.device = device;
         createTime = System.currentTimeMillis();
@@ -64,9 +66,9 @@ public class Token {
         setToken();
     }
 
-    public static Token parseString(String tokenStr) {
+    public static Token parseString(String sign, String tokenStr) {
         Token token = new Token();
-        String json = JwtHelper.decodeAndVerify(tokenStr, new MacSigner(SECRET)).getClaims();
+        String json = JwtHelper.decodeAndVerify(tokenStr, new MacSigner(sign)).getClaims();
         Map<String, String> claims = null;
         try {
             claims = new ObjectMapper().readValue(json, Map.class);
@@ -92,7 +94,7 @@ public class Token {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        token = JwtHelper.encode(json, new MacSigner(SECRET)).getEncoded();
+        token = JwtHelper.encode(json, new MacSigner(sign)).getEncoded();
     }
 
     @Override

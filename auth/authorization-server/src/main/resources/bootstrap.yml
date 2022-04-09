@@ -11,9 +11,12 @@ spring:
     nacos:
       discovery:
         server-addr: localhost:8848
-    #      config:
-    #        server-addr: ${REGISTER_HOST:localhost}:${REGISTER_PORT:8848}
-    #        file-extension: yml
+      config:
+        server-addr: ${REGISTER_HOST:localhost}:${REGISTER_PORT:8848}
+        file-extension: yml
+        shared-configs:
+          - data-id: auth.yml
+            refresh: true
     sentinel:
       transport:
         dashboard: localhost:8080

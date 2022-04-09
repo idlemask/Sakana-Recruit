@@ -1,0 +1,11 @@
+
+server:
+  port: 9090
+  servlet:
+    application-display-name: 23432
+
+spring:
+  application:
+    name: core
+  config:
+    name: core

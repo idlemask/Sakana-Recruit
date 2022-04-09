@@ -5,12 +5,13 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
-import name.sakanacatcher.recruit.common.core.exception.BaseException;
 import name.sakanacatcher.recruit.common.core.exception.ErrorType;
 import name.sakanacatcher.recruit.common.core.exception.SystemErrorType;
 
 import java.time.Instant;
 import java.time.ZonedDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 @ApiModel(description = "rest请求的返回模型，所有rest正常都返回该类的对象")
 @Getter
@@ -42,6 +43,7 @@ public class Result<T> {
         this.time = ZonedDateTime.now().toInstant();
     }
 
+
     /**
      * @param errorType
      * @param data
@@ -58,30 +60,19 @@ public class Result<T> {
      * @param mesg
      * @param data
      */
-    private Result(String code, String mesg, T data) {
+    public Result(String code, String mesg, T data) {
         this.code = code;
         this.mesg = mesg;
         this.data = data;
         this.time = ZonedDateTime.now().toInstant();
     }
 
-    /**
-     * 快速创建成功结果并返回结果数据
-     *
-     * @param data
-     * @return Result
-     */
-    public static Result success(Object data) {
-        return new Result<>(SUCCESSFUL_CODE, SUCCESSFUL_MESG, data);
+    public static Result<Boolean> success(){
+        return new Result<Boolean>(SUCCESSFUL_CODE, SUCCESSFUL_MESG, true);
     }
 
-    /**
-     * 快速创建成功结果
-     *
-     * @return Result
-     */
-    public static Result success() {
-        return success(null);
+    public static Result<String> success(String data) {
+        return new Result<String>(SUCCESSFUL_CODE, SUCCESSFUL_MESG, data);
     }
 
     /**
@@ -89,60 +80,22 @@ public class Result<T> {
      *
      * @return Result
      */
-    public static Result fail() {
-        return new Result(SystemErrorType.SYSTEM_ERROR);
+    public static Result<Boolean> fail() {
+        return new Result<Boolean>(SystemErrorType.SYSTEM_ERROR,false);
     }
 
-    /**
-     * 系统异常类没有返回数据
-     *
-     * @param baseException
-     * @return Result
-     */
-    public static Result fail(BaseException baseException) {
-        return fail(baseException, null);
+
+
+    public static Result<String> fail(Exception exception) {
+        return new Result<String>(SystemErrorType.SYSTEM_NOT_FOUND_EXCEPTION, exception.toString());
     }
 
-    /**
-     * 系统异常类并返回结果数据
-     *
-     * @param data
-     * @return Result
-     */
-    public static Result fail(BaseException baseException, Object data) {
-        return new Result<>(baseException.getErrorType(), data);
+
+    public static Result<Boolean> fail(ErrorType errorType) {
+        return Result.fail(errorType);
     }
 
-    /**
-     * 系统异常类并返回结果数据
-     *
-     * @param errorType
-     * @param data
-     * @return Result
-     */
-    public static Result fail(ErrorType errorType, Object data) {
-        return new Result<>(errorType, data);
-    }
 
-    /**
-     * 系统异常类并返回结果数据
-     *
-     * @param errorType
-     * @return Result
-     */
-    public static Result fail(ErrorType errorType) {
-        return Result.fail(errorType, null);
-    }
-
-    /**
-     * 系统异常类并返回结果数据
-     *
-     * @param data
-     * @return Result
-     */
-    public static Result fail(Object data) {
-        return new Result<>(SystemErrorType.SYSTEM_ERROR, data);
-    }
 
 
     /**
@@ -163,5 +116,13 @@ public class Result<T> {
     @JsonIgnore
     public boolean isFail() {
         return !isSuccess();
+    }
+
+    public Map<String,Object> toMap(){
+        Map<String,Object> map = new HashMap<>();
+        map.put("code",code);
+        map.put("message",mesg);
+        map.put("data",data);
+        return map;
     }
 }

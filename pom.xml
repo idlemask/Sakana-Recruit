@@ -10,11 +10,9 @@
   <version>1.0-SNAPSHOT</version>
   <modules>
     <module>common</module>
-    <module>service-api</module>
+    <module>collector</module>
     <module>gateway</module>
     <module>auth</module>
-    <module>machine-learning</module>
-    <module>collector</module>
     <module>user</module>
   </modules>
 
@@ -138,6 +136,16 @@
         <groupId>com.squareup.okhttp3</groupId>
         <artifactId>okhttp</artifactId>
         <version>3.10.0</version>
+      </dependency>
+      <dependency>
+        <groupId>com.alibaba</groupId>
+        <artifactId>fastjson</artifactId>
+        <version>1.2.76</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-jwt</artifactId>
+        <version>1.1.1.RELEASE</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

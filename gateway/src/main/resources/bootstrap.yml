@@ -1,0 +1,28 @@
+server:
+  port: 8090
+spring:
+  application:
+    name: gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+      config:
+        server-addr: ${REGISTER_HOST:localhost}:${REGISTER_PORT:8848}
+        file-extension: yml
+        shared-configs:
+          - data-id: auth.yml
+            refresh: true
+    sentinel:
+      transport:
+        dashboard: localhost:8080
+    gateway:
+      enabled: true
+      discovery:
+        locator:
+          lower-case-service-id: true
+      routes:
+        - id: collector-consumer
+          uri: lb://collector-consumer
+          predicates:
+            - Path=/consumer/**
