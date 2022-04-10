@@ -1,3 +1,5 @@
-server:
-  port: 8090
-
+feign:
+  sentinel:
+    enabled: true
+  okhttp:
+    enabled: true

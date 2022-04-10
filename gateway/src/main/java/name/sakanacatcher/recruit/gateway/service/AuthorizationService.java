@@ -13,17 +13,14 @@ import static name.sakanacatcher.recruit.common.core.entity.vo.Result.SUCCESSFUL
 
 @Component
 @FeignClient(value = "authorization-server")
-@RequestMapping( value = "auth/authorization")
 public interface AuthorizationService {
-    @GetMapping(value = "generate")
+    @GetMapping(value = "/auth/authorization/generate")
     public Result<String> generateToken(@RequestParam("username") String username );
 
-    @GetMapping(value = "clear")
+    @GetMapping(value = "/auth/authorization/clear")
     public Result clearToken(@RequestParam("username") String username, @RequestParam(name = "device", required = false) String device);
 
-    @GetMapping(value = "refresh")
+    @GetMapping(value = "/auth/authorization/refresh")
     public Result<String> refreshToken(@RequestParam("tokenStr") String tokenStr, @RequestParam(name = "device", required = false) String device);
 
-    @GetMapping("ignore/check/url")
-    public Result<Boolean> isIgnore(@RequestParam("url") String url);
 }

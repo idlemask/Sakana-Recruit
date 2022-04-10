@@ -2,6 +2,7 @@ package name.sakanacatcher.recruit.auth.authorization;
 
 import name.sakanacatcher.recruit.auth.authorization.service.ServiceRegisterService;
 import name.sakanacatcher.recruit.common.core.CoreApplication;
+import name.sakanacatcher.recruit.common.core.entity.vo.Result;
 import name.sakanacatcher.recruit.common.core.util.RegisterUtil;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,7 +20,7 @@ public class AuthorizationServerApplication {
         RegisterUtil registerUtil = new RegisterUtil(context);
         registerUtil.run(args);
         ServiceRegisterService serviceRegisterService = context.getBean(ServiceRegisterService.class);
-        serviceRegisterService.registerResource(registerUtil.form);
-
+        Result<String> result = serviceRegisterService.registerResource(registerUtil.form);
+        System.out.println(result.toMap().toString());
     }
 }

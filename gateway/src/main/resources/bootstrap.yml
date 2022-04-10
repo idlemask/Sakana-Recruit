@@ -26,3 +26,11 @@ spring:
           uri: lb://collector-consumer
           predicates:
             - Path=/consumer/**
+        - id: authorization-server
+          uri: lb://authorization-server
+          predicates:
+            - Path=/auth/authorization/**
+        - id: authentication-server
+          uri: lb://authentication-server
+          predicates:
+            - Path=/auth/authentication/**

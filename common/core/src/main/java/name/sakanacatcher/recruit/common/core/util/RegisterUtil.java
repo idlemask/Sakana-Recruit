@@ -1,11 +1,7 @@
 package name.sakanacatcher.recruit.common.core.util;
 
-
-import com.alibaba.fastjson.JSONArray;
-import name.sakanacatcher.recruit.common.core.service.ServiceRegisterService;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -61,7 +57,7 @@ public class RegisterUtil implements ApplicationContextAware, CommandLineRunner 
                 if(getMapping != null){
                     url.append(getMapping.value()[0]);
                 }
-                else {
+                else if(postMapping != null) {
                     url.append(postMapping.value()[0]);
                 }
                 map.put("name",controllerName);

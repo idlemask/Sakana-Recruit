@@ -1,14 +1,11 @@
 package config;
 
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import name.sakanacatcher.recruit.common.core.entity.vo.Result;
 import name.sakanacatcher.recruit.common.core.exception.SystemErrorType;
 import name.sakanacatcher.recruit.common.core.util.ServiceTokenUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,16 +23,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static name.sakanacatcher.recruit.common.core.exception.SystemErrorType.*;
-
-@Configuration
-public class ProviderSecurityConfig extends WebSecurityConfigurerAdapter {
-
+public class ConsumerSecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${sign:1234}")
     String sign;
 
-
-    @Bean
     public AuthenticationManager authenticationManager() throws Exception {
         return super.authenticationManager();
     }
@@ -45,8 +36,6 @@ public class ProviderSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable();
         http.addFilterAfter(tokenAuthenticate(), BasicAuthenticationFilter.class);
     }
-
-
 
 
     BasicAuthenticationFilter tokenAuthenticate() throws Exception {
