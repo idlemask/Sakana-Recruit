@@ -1,4 +1,4 @@
-package name.sakanacatcher.auth.authentication.client;
+package name.sakanacatcher.recruit.auth.authentication.client;
 
 import name.sakanacatcher.recruit.common.core.service.ServiceRegisterService;
 import name.sakanacatcher.recruit.common.core.util.RegisterUtil;

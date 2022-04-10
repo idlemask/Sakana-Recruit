@@ -28,9 +28,10 @@ public class RegisterUtil implements ApplicationContextAware, CommandLineRunner 
     public void run(String... args) throws Exception {
         Map<String, Object> controllers = applicationContext.getBeansWithAnnotation(RestController.class);
         System.out.println("---------------注册资源----------------");
+        form = new HashMap<>();
+        List<Map<String,Object>> list = new ArrayList<>();
+        List<String> controllerList = new ArrayList<>();
         for (Map.Entry<String, Object> entry : controllers.entrySet()) {
-            form = new HashMap<>();
-
             // 获取Controller
             Object value = entry.getValue();
             Class<?> aClass = AopUtils.getTargetClass(value);
@@ -44,10 +45,9 @@ public class RegisterUtil implements ApplicationContextAware, CommandLineRunner 
 
             RequestMapping reqAnnotation = aClass.getAnnotation(RequestMapping.class);
             RequestMapping declaredAnnotation = aClass.getDeclaredAnnotation(RequestMapping.class);
-            form.put("name",controllerName);
+            controllerList.add(controllerName);
 
             List<Method> declaredMethods = Arrays.asList(aClass.getDeclaredMethods());
-            List<Map<String,Object>> list = new ArrayList<>();
             System.out.println(canonicalName + ":");
             for(Method method:declaredMethods){
                 Map<String,Object> map = new HashMap<>();
@@ -65,7 +65,8 @@ public class RegisterUtil implements ApplicationContextAware, CommandLineRunner 
                 list.add(map);
                 System.out.println(url);
             }
-            form.put("data",list);
+            form.put("resources",list);
+            form.put("controllers",controllerList);
         }
     }
     @Override

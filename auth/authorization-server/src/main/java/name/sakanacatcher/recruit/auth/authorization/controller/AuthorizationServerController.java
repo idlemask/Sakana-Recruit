@@ -12,12 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import static name.sakanacatcher.recruit.common.core.exception.SystemErrorType.BAD_TOKEN;
 import static name.sakanacatcher.recruit.common.core.exception.SystemErrorType.TOKEN_NOT_FOUND;
 
 @RestController
 @RefreshScope
-@RequestMapping("auth/authorization")
+@RequestMapping("auth/authorization/")
 public class AuthorizationServerController {
     @Value("${sign:sakana}")
     String sign;

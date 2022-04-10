@@ -31,33 +31,35 @@ public class ResourceController {
     public Result<Boolean> registerResource(@RequestBody Map<String, Object> formData){
         String name = (String) formData.get("name");
         System.out.println(formData.get("data"));
-        List<Map<String,Object>> data = (List<Map<String, Object>>) formData.get("data");
-        Map<String,Object> map = new HashMap<>();
-        map.put("name",name);
-        if(beforeRegisterService(map).isSuccess()){
-            List<Resource> olds = resourceRepository.findAllByName(name);
-            for(Object o:data){
-                Resource resource = JSONObject.parseObject(JSONObject.toJSONString(o),Resource.class);
-                boolean flag = true;
-                for(Resource old:olds){
-                    if(resource.getUrl().equals(old.getUrl())){
-                        flag = false;
-                        resourceRepository.updateEnableById(old.getId(),true);
-                    }
-                }
-                if(flag){
+        List<Map<String,Object>> data = (List<Map<String, Object>>) formData.get("resources");
+        System.out.println(data);
+        List<String> controllers = (List<String>) formData.get("controllers");
+        Map<String,List<Resource>> olds = new HashMap<>();
+        Map<String,Boolean> temp= new HashMap<>();
+        for(String s:controllers){
+            if(beforeRegisterService(s).isSuccess()){
+                olds.put(s,resourceRepository.findAllByName(s));
+            }
+        }
+        for(Object o:data){
+            Resource resource = JSONObject.parseObject(JSONObject.toJSONString(o),Resource.class);
+            if(olds.get(resource.getName()).stream().anyMatch(r ->{ return r.getUrl().equals(resource.getUrl()); })){
+                resourceRepository.updateEnableByUrl(resource.getUrl(),true);
+            }
+            else {
+                if(!temp.containsKey(resource.getUrl())){
+                    temp.put(resource.getUrl(),true);
+                    System.out.println(resource);
                     resourceRepository.save(resource);
                 }
             }
-            return Result.success();
         }
-        else {
-            return Result.fail();
-        }
+        return Result.success();
     }
+
     @PostMapping("register/before")
-    public Result<Boolean> beforeRegisterService(@RequestBody Map<String,Object> formData){
-        resourceRepository.updateEnableByName((String) formData.get("name"),false);
+    public Result<Boolean> beforeRegisterService(String name){
+        resourceRepository.updateEnableByName(name,false);
         return Result.success();
     }
 

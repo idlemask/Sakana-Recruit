@@ -20,6 +20,7 @@ public class AuthorizationServerApplication {
         RegisterUtil registerUtil = new RegisterUtil(context);
         registerUtil.run(args);
         ServiceRegisterService serviceRegisterService = context.getBean(ServiceRegisterService.class);
+        System.out.println(registerUtil.form);
         Result<String> result = serviceRegisterService.registerResource(registerUtil.form);
         System.out.println(result.toMap().toString());
     }

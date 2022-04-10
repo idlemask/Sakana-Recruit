@@ -25,4 +25,9 @@ public interface ResourceRepository extends JpaRepository<Resource, Integer> {
     @Modifying
     @Query(value = "UPDATE resource SET enable = ?2 where id = ?1", nativeQuery = true)
     void updateEnableById(Integer id, Boolean enable);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE resource SET enable = ?2 where url = ?1", nativeQuery = true)
+    void updateEnableByUrl(String url, Boolean enable);
 }
